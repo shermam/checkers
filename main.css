@@ -1,0 +1,16 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+canvas{
+    /* height: 90%; */
+    border: 9px solid;
+}
+
+object{
+    display: none;
+}
