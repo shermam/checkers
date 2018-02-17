@@ -1,22 +1,22 @@
 export class Square {
-    constructor(x, y, canvas, gridSize, piece) {
+    constructor(x, y, canvas, gridSize, color) {
         this.x = x;
         this.y = y;
         this.canvas = canvas;
         this.context = canvas.getContext('2d');
         this.gridSize = gridSize;
         this.size = this.canvas.width / this.gridSize;
-        this.piece = piece;
+        this.color = color;
     }
 
     draw() {
-        const xPos = this.x * this.size * 2 + (this.y % 2 === 0 ? this.size : 0);
+        const xPos = this.x * this.size;
         const yPos = this.y * this.size;
         const radius = this.size / 2;
 
         this.context.beginPath()
 
-        this.context.fillStyle = '#004400';
+        this.context.fillStyle = this.color;
 
         this.context.fillRect(
             xPos,

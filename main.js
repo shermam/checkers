@@ -1,5 +1,3 @@
-//@ts-check
-
 import { Square } from "./square.js";
 
 const canvas = document.querySelector('canvas');
@@ -11,9 +9,16 @@ initializePieces();
 function createSquares() {
     const squares = [];
 
-    for (let j = 0; j < gridSize; j++) {
-        for (let i = 0; i < gridSize / 2; i++) {
-            squares.push(new Square(i, j, canvas, gridSize));
+    for (let i = 0; i < gridSize; i++) {
+        squares[i] = [];
+        for (let j = 0; j < gridSize; j++) {
+            squares[i][j] = new Square(
+                j,
+                i,
+                canvas,
+                gridSize,
+                (i + j) % 2 === 0 ? '#FFFFFF' : '#00CC00'
+            );
         }
     }
 
@@ -21,22 +26,26 @@ function createSquares() {
 }
 
 function initializePieces() {
-    for (let i = 0; i < squares.length; i++) {
-        const square = squares[i];
-        if (i < squares.length / 2 - 4) {
-            square.piece = 1;
-        } else if (i >= squares.length / 2 + 4) {
-            square.piece = 2;
+
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+
+            if (i < 3 && (i + j) % 2 !== 0) {
+                squares[i][j].piece = 1;
+            } else if (i >= squares.length - 3 && (i + j) % 2 !== 0) {
+                squares[i][j].piece = 2;
+            }
         }
     }
 }
 
 function draw() {
 
-    for (const square of squares) {
-        square.draw();
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            squares[i][j].draw();
+        }
     }
-
 
     //requestAnimationFrame(draw);
 };
