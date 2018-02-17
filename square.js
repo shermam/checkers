@@ -1,5 +1,5 @@
 export class Square {
-    constructor(x, y, canvas, gridSize, color) {
+    constructor(x, y, canvas, gridSize, color, piece) {
         this.x = x;
         this.y = y;
         this.canvas = canvas;
@@ -7,6 +7,7 @@ export class Square {
         this.gridSize = gridSize;
         this.size = this.canvas.width / this.gridSize;
         this.color = color;
+        this.piece = piece;
     }
 
     draw() {

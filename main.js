@@ -4,7 +4,8 @@ const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
 const gridSize = 8;
 const squares = createSquares();
-initializePieces();
+
+let selectedSquare = null;
 
 function createSquares() {
     const squares = [];
@@ -17,7 +18,8 @@ function createSquares() {
                 i,
                 canvas,
                 gridSize,
-                (i + j) % 2 === 0 ? '#FFFFFF' : '#00CC00'
+                (i + j) % 2 === 0 ? '#FFFFFF' : '#00CC00',
+                null
             );
         }
     }
@@ -47,15 +49,45 @@ function draw() {
         }
     }
 
-    //requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
 };
 
-canvas.addEventListener('mousedown', handler);
-canvas.addEventListener('mouseup', handler);
 
-function handler(e) {
-    const size = canvas.width / gridSize;
-    console.log(Math.floor(e.offsetX / size), Math.floor(e.offsetY / size));
+function initializeHandlers() {
+    canvas.addEventListener('mousedown', downHandler);
+    canvas.addEventListener('mouseup', upHandler);
 }
 
+function downHandler(e) {
+    selectedSquare = getSquare(e);
+}
+
+function upHandler(e) {
+    movePiece(selectedSquare, getSquare(e));
+}
+
+function movePiece(from, to) {
+    if ((from.x + from.y) % 2 === 0 ||
+        (to.x + to.y) % 2 === 0 ||
+        from.piece === null ||
+        from === to ||
+        to.piece !== null
+    ) {
+        return;
+    }
+
+    to.piece = from.piece;
+    from.piece = null;
+
+}
+
+function getSquare(e) {
+    const size = canvas.width / gridSize;
+    const i = Math.floor(e.offsetY / size);
+    const j = Math.floor(e.offsetX / size);
+    return squares[i][j];
+}
+
+initializeHandlers();
+initializePieces();
 draw();
