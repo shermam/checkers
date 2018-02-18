@@ -20,8 +20,8 @@ export class Square {
         this.context.fillStyle = this.color;
 
         this.context.fillRect(
-            xPos,
             yPos,
+            xPos,
             this.size,
             this.size
         );
@@ -30,8 +30,8 @@ export class Square {
 
             this.context.fillStyle = this.piece === 1 ? '#FF0000' : '#0000FF';
             this.context.ellipse(
-                xPos + radius,
                 yPos + radius,
+                xPos + radius,
                 radius * 0.7,
                 radius * 0.7,
                 0,
@@ -46,15 +46,3 @@ export class Square {
         this.context.closePath()
     }
 }
-
-// [
-//     [0],
-//     [0, 1, 2],
-//     [0, 1, 2, 3, 4],
-//     [0, 1, 2, 3, 4, 5, 6],
-
-//     [0, 1, 2, 3, 4, 5, 6],
-//     [0, 1, 2, 3, 4],
-//     [0, 1, 2],
-//     [0],
-// ]
