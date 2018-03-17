@@ -129,25 +129,38 @@ function getPossibleMovesFrom(i, j, squares) {
     const firstPossibility = squares[i + pieceValue][j - 1];
     const secondPossibility = squares[i + pieceValue][j + 1];
 
-    if (firstPossibility && firstPossibility.piece === null) {
-        possibleMoves.push({
-            fromX: i,
-            fromY: j,
-            toX: firstPossibility.x,
-            toY: firstPossibility.y
-        });
-    }
-
-    if (secondPossibility && secondPossibility.piece === null) {
-        possibleMoves.push({
-            fromX: i,
-            fromY: j,
-            toX: secondPossibility.x,
-            toY: secondPossibility.y
-        });
-    }
+    checkPossibilities(pieceValue, i, j, firstPossibility, squares, possibleMoves, -1);
+    checkPossibilities(pieceValue, i, j, secondPossibility, squares, possibleMoves, 1);
 
     return possibleMoves;
+}
+
+function checkPossibilities(pieceValue, i, j, possibility, squares, possibleMoves, offset) {
+    if (possibility) {
+        if (possibility.piece === null) {
+            possibleMoves.push({
+                fromX: i,
+                fromY: j,
+                toX: possibility.x,
+                toY: possibility.y
+            });
+        } else if (possibility.piece !== pieceValue) {
+            possibility =
+                (squares[possibility.x + pieceValue] ||
+                    [])[possibility.y + offset];
+            if (
+                possibility &&
+                possibility.piece === null
+            ) {
+                possibleMoves.push({
+                    fromX: i,
+                    fromY: j,
+                    toX: possibility.x,
+                    toY: possibility.y
+                });
+            }
+        }
+    }
 }
 
 function getSquare(e) {
