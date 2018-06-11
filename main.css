@@ -4,11 +4,12 @@ body{
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-color: #CCCCCC;
 }
 
 canvas{
-    /* height: 90%; */
-    border: 9px solid;
+    width: 80vmin;
+    height: 80vmin;
 }
 
 object{
