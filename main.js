@@ -82,16 +82,56 @@ const position = [
 //   A capturing move of a king is similar to that of a man, but may be in a forward or backward direction.
 
 
-canvas.addEventListener('click', e => {
+// To register a human move we have to:
+//  1. Listen to the mousedown event and if there is a move in progress register 
+//     the end of the move with its coordinates and call the treatMove function otherwise register the beginning of the move with its coords
+//  2. Listen to the mouseup event and if the coords changed, register the end coords of the move and call the treatMove function
+//
+function setupListeners() {
+
+    let move = null;
+
+    canvas.addEventListener('mousedown', e => {
+        const { i, j } = getCoord(e);
+
+        if (!treatEnd(i, j) && !move) {
+            move = { start: { i, j } };
+        }
+    });
+
+    canvas.addEventListener('mouseup', e => {
+        const { i, j } = getCoord(e);
+
+        treatEnd(i, j);
+    });
+
+    function treatEnd(i, j) {
+        if (move && (move.start.i !== i || move.start.j !== j)) {
+            move.end = { i, j };
+            treatMove(move);
+            move = null;
+            return true;
+        }
+    }
+}
+
+
+function treatMove(move) {
+    const value = position[move.start.i][move.start.j];
+    position[move.start.i][move.start.j] = 0;
+    position[move.end.i][move.end.j] = value;
+
+    drawPosition();
+}
+
+function getCoord(e) {
     const boundingRect = canvas.getBoundingClientRect();
     const viewCellSize = boundingRect.width / trackLength;
     const i = Math.floor(e.offsetY / viewCellSize);
     const j = Math.floor(e.offsetX / viewCellSize);
 
-    position[i][j] = 1;
-    drawPosition();
-
-})
+    return { i, j };
+}
 
 function drawPosition() {
     for (let i = 0; i < trackLength; i++) {
@@ -131,7 +171,7 @@ function isEven(number) {
 // The official draughtboard for use in all major events shall be of 
 // Green and White (or off white/cream) colours for the dark and light squares.
 function drawLightRect(x, y) {
-    drawRect(x, y, '#FFFFFF');
+    drawRect(x, y, '#DDDDDD');
 }
 
 function drawDarkRect(x, y) {
@@ -174,5 +214,5 @@ function drawCircle(x, y, color) {
 // because all their pieces have been captured or their remaining pieces are all blocked.
 
 
-
+setupListeners();
 drawPosition();
