@@ -124,6 +124,16 @@ function treatMove(move) {
     drawPosition();
 }
 
+// The size of the canvas (canvas.width / canvas.height) may be different from the size it actually takes on the screen
+// So to correctly map the clicked area on the screen to the intended area on the canvas
+// we need to get the dimensions of the canvas on the screen.
+// Here I am doing that with the getBoundingClientRect.
+// Doing this all of the time may not be the most performatic way of acomplishing this
+// Maybe the dimensions could be retrieved once when the screen loads and the again 
+// inside a callback of a resize event listener
+// I particularly think that the best option would be to set the canvas dimansions (canvas.width / canvas.height)
+// with the dimensions gotten from the screen with getBoundingClientRect on load and then again inside a callback of a resize event listener
+// This way we solve the mapping problem and get the best resolution for our drawings on the screen
 function getCoord(e) {
     const boundingRect = canvas.getBoundingClientRect();
     const viewCellSize = boundingRect.width / trackLength;
