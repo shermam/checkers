@@ -38,15 +38,19 @@ let darkPiecesTurn = true;
 // The White pieces will be on the last 12 squares, Nos. 21 thru 32, 
 // with No.32 being the nearest double corner square.
 
+const A = 1;
+const B = -1;
+const _ = 0;
+
 const position = [
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [-1, 0, -1, 0, -1, 0, -1, 0],
-    [0, -1, 0, -1, 0, -1, 0, -1],
-    [-1, 0, -1, 0, -1, 0, -1, 0],
+    [_, A, _, A, _, A, _, A],
+    [A, _, A, _, A, _, A, _],
+    [_, A, _, A, _, A, _, A],
+    [_, _, _, _, _, _, _, _],
+    [_, _, _, _, _, _, _, _],
+    [B, _, B, _, B, _, B, _],
+    [_, B, _, B, _, B, _, B],
+    [B, _, B, _, B, _, B, _],
 ];
 
 // There are fundamentally 4 types of move: 

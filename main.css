@@ -10,6 +10,7 @@ body{
 canvas{
     width: 80vmin;
     height: 80vmin;
+    box-shadow: 3px 3px 16px 4px rgba(0, 0, 0, 0.5);
 }
 
 object{
