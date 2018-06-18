@@ -81,6 +81,58 @@ const position = [
 // 4. the capturing move of a king. 
 //   A capturing move of a king is similar to that of a man, but may be in a forward or backward direction.
 
+function treatMove(move) {
+    const value = position[move.start.i][move.start.j];
+
+    // If there is no piece value at the start position 
+    // the move should be aborted
+    if (!value) return;
+
+    // If the end square of the move is not vacant abort the move
+    if (position[move.end.i][move.end.j]) return;
+
+    // If is not the turn of the player whos piece value
+    // is registered at the start square of the move
+    // abort the move
+    if (value > 0 != darkPiecesTurn) return;
+
+    // Tracks if the move has ended
+    let moveIsOver = false;
+
+    // Check if the piece value represents a man
+    if (Math.abs(value) === 1) {
+        // The piece is a man
+
+        // Check the move is an ordinary move of a man
+        // An ordinary move of a man is its transfer diagonally
+        // forward left or right from one square to an immediately neighbouring vacant square.
+        if (
+            move.end.i - move.start.i === value && // Check if it is moving foward
+            Math.abs(move.end.j - move.start.j) === 1 // Check if it is moving diagonally
+        ) {
+            // Transfer the value from the start to the end position
+            position[move.start.i][move.start.j] = 0;
+            position[move.end.i][move.end.j] = value;
+
+            // Redraw the board
+            drawPosition();
+
+            // End the move
+            moveIsOver = true;
+        }
+
+    } else {
+        // The piece is a king
+    }
+
+
+
+    // After the move is over change is the turn of the other player
+    if (moveIsOver) {
+        darkPiecesTurn = value < 0;
+    }
+}
+
 
 // To register a human move we have to:
 //  1. Listen to the mousedown event and if there is a move in progress register 
@@ -115,14 +167,6 @@ function setupListeners() {
     }
 }
 
-
-function treatMove(move) {
-    const value = position[move.start.i][move.start.j];
-    position[move.start.i][move.start.j] = 0;
-    position[move.end.i][move.end.j] = value;
-
-    drawPosition();
-}
 
 // The size of the canvas (canvas.width / canvas.height) may be different from the size it actually takes on the screen
 // So to correctly map the clicked area on the screen to the intended area on the canvas
