@@ -114,6 +114,14 @@ function treatMove(move) {
             position[move.start.i][move.start.j] = 0;
             position[move.end.i][move.end.j] = value;
 
+
+            // When a man reaches the farthest row forward (known as the “king-row” or “crown-head”) 
+            // it becomes a king, and this completes the turn of play. 
+            const kingRow = value > 0 ? trackLength - 1 : 0;
+            if (move.end.i === kingRow) {
+                position[move.end.i][move.end.j] *= 2;
+            }
+
             // Redraw the board
             drawPosition();
 
@@ -123,6 +131,23 @@ function treatMove(move) {
 
     } else {
         // The piece is a king
+
+        // An ordinary move of a king (crowned man) is from one square diagonally 
+        // forward or backward, left or right, to an immediately neighbouring vacant square.
+        if (
+            Math.abs(move.end.i - move.start.i) === 1 && // Check if it is moving only one row
+            Math.abs(move.end.j - move.start.j) === 1 // Check if it is moving diagonally
+        ) {
+            // Transfer the value from the start to the end position
+            position[move.start.i][move.start.j] = 0;
+            position[move.end.i][move.end.j] = value;
+
+            // Redraw the board
+            drawPosition();
+
+            // End the move
+            moveIsOver = true;
+        }
     }
 
 
@@ -246,7 +271,23 @@ function drawRect(x, y, color) {
 // referred to as “Black” and White” in the games’ literature. 
 // The pieces shall be a cylindrical shape of a uniform diameter, ...
 function drawPiece(x, y, value) {
-    const color = value > 0 ? '#FF0000' : '#FFFFFF';
+    let color;
+
+    switch (value) {
+        case 1:
+            color = '#FF0000';
+            break;
+        case 2:
+            color = '#FF0088';
+            break;
+        case -1:
+            color = '#FFFFFF';
+            break;
+        case -2:
+            color = '#DDDDDD';
+            break;
+    }
+
     drawCircle(x, y, color);
 }
 
